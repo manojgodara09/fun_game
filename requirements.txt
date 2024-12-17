@@ -3,4 +3,4 @@ uvicorn
 pydantic
 passlib[bcrypt]
 python-jose
-sqlite3
+sqlalchemy
