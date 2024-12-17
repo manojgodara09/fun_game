@@ -1,6 +1,6 @@
-fastapi==0.100.0
-uvicorn==0.23.0
-pydantic==1.10.8
-passlib[bcrypt]==1.7.4
-python-jose==3.3.0
-sqlite3==3.36.0  # Built-in library; version included for reference
+fastapi
+uvicorn
+pydantic
+passlib[bcrypt]
+python-jose
+sqlite3
