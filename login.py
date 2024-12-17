@@ -52,4 +52,4 @@ def login(request: LoginRequest):
         data={"sub": user[0]},
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
-    return {"access_token": access_token, "balance": user[2]}
+    return {"access_token": access_token, "token_type": "bearer", "balance": user[2]}
