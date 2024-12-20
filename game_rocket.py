@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 # Configuration
-DATABASE_URL="postgres://koyeb-adm:MK59GFoIzBZb@ep-shy-frost-a12m58cj.ap-southeast-1.pg.koyeb.app/koyebdb"
+DATABASE_URL="postgresql://fun_game_user:xOuZ6LLpXDxBGg9WnSRalfc1H1dRAqj6@dpg-ctgsn00gph6c73ckd45g-a/fun_game"
 SECRET_KEY="d6A9bE3cAf2D6E5d8eFb6d8A6Bc9D1d5F7A2"
 ALGORITHM="HS256"
 
