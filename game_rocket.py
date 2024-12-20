@@ -4,13 +4,18 @@ from jose import jwt, JWTError
 import psycopg2
 import random
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+import logging
 
-# Configurations
-SECRET_KEY = "d6A9bE3cAf2D6E5d8eFb6d8A6Bc9D1d5F7A2"
-ALGORITHM = "HS256"
-HOUSE_EDGE = 0.20  # 20% house edge
+# Load environment variables
+load_dotenv()
 
-DATABASE_URL = "postgres://koyeb-adm:MK59GFoIzBZb@ep-shy-frost-a12m58cj.ap-southeast-1.pg.koyeb.app/koyebdb"
+# Configuration
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 router = APIRouter()
 
