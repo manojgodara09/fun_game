@@ -2,9 +2,7 @@ from fastapi import FastAPI
 from login import router as login_router
 from game_rocket import router as rocket_router
 from database import init_db
-from dotenv import load_dotenv
 
-load_dotenv()
 
 app = FastAPI()
 

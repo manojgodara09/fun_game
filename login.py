@@ -4,25 +4,14 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
 import psycopg2
-from dotenv import load_dotenv
-import os
-import logging
 
-# Load environment variables
-load_dotenv()
-
-# Configuration
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = "postgres://koyeb-adm:MK59GFoIzBZb@ep-shy-frost-a12m58cj.ap-southeast-1.pg.koyeb.app/koyebdb"
+SECRET_KEY = "d6A9bE3cAf2D6E5d8eFb6d8A6Bc9D1d5F7A2"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 router = APIRouter()
-
-# Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Request Model
 class LoginRequest(BaseModel):
@@ -47,7 +36,6 @@ def authenticate_user(username: str, password: str):
             return True
         return False
     except Exception as e:
-        logger.error(f"Error authenticating user: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # Function to create access token
@@ -67,19 +55,15 @@ def set_user_logged_in(username: str, logged_in: bool):
         conn.commit()
         conn.close()
     except Exception as e:
-        logger.error(f"Error setting user logged in status: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # Login Endpoint
 @router.post("/login", response_model=TokenResponse)
 def login(request: LoginRequest):
     try:
-        logger.info(f"Attempting to authenticate user: {request.username}")
         if not authenticate_user(request.username, request.password):
-            logger.warning(f"Authentication failed for user: {request.username}")
             raise HTTPException(status_code=401, detail="Invalid username or password")
         
-        logger.info(f"Setting user {request.username} as logged in")
         set_user_logged_in(request.username, True)  # Set user as logged in
 
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -94,10 +78,8 @@ def login(request: LoginRequest):
         user_balance = cursor.fetchone()[0]
         conn.close()
 
-        logger.info(f"User {request.username} logged in successfully")
         return {"access_token": access_token, "token_type": "bearer", "balance": user_balance}
     except HTTPException as e:
         raise e
     except Exception as e:
-        logger.error(f"Error during login: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")

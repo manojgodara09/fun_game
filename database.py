@@ -1,11 +1,7 @@
 import psycopg2
-from dotenv import load_dotenv
-import os
 
-# Load environment variables
-load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = "postgres://koyeb-adm:MK59GFoIzBZb@ep-shy-frost-a12m58cj.ap-southeast-1.pg.koyeb.app/koyebdb"
 
 def init_db():
     conn = psycopg2.connect(DATABASE_URL)
