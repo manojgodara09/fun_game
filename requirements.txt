@@ -6,5 +6,4 @@ python-jose
 sqlalchemy
 psycopg2 
 dotenv
-os
 logging
