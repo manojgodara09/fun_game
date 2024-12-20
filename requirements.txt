@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 pydantic
-passlib[bcrypt]
+passlib[argon2]
 python-jose
-sqlalchemy
 psycopg2
