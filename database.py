@@ -1,7 +1,7 @@
 import psycopg2
 
 
-DATABASE_URL = "postgres://koyeb-adm:MK59GFoIzBZb@ep-shy-frost-a12m58cj.ap-southeast-1.pg.koyeb.app/koyebdb"
+DATABASE_URL = "postgresql://fun_game_user:xOuZ6LLpXDxBGg9WnSRalfc1H1dRAqj6@dpg-ctgsn00gph6c73ckd45g-a/fun_game"
 
 def init_db():
     conn = psycopg2.connect(DATABASE_URL)
