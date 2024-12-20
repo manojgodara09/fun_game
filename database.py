@@ -1,13 +1,14 @@
 import psycopg2
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def init_db():
-    conn = psycopg2.connect(
-        dbname="koyebdb",
-        user="koyeb-adm",
-        password="MK59GFoIzBZb",
-        host="ep-shy-frost-a12m58cj.ap-southeast-1.pg.koyeb.app",
-        port="5432"
-    )
+    conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
     
     # Create user_data table
@@ -30,9 +31,13 @@ def init_db():
             before_balance FLOAT NOT NULL,
             after_balance FLOAT NOT NULL,
             multiplier FLOAT NOT NULL,
-            play_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            play_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES user_data (id) ON DELETE CASCADE
         )
     """)
     
     conn.commit()
     conn.close()
+
+if __name__ == "__main__":
+    init_db()
