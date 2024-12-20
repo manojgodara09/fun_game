@@ -38,7 +38,7 @@ def create_access_token(data: dict, expires_delta: timedelta):
 def get_user_by_username(username: str):
     conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
-    cursor.execute("SELECT username, password, balance, logged_in FROM user_data WHERE username=%s", (username,))
+    cursor.execute("SELECT id, username, password, balance, logged_in FROM user_data WHERE username=%s", (username,))
     user = cursor.fetchone()
     conn.close()
     return user
@@ -54,15 +54,15 @@ def set_user_logged_in(username: str, logged_in: bool):
 @router.post("/login", response_model=LoginResponse)
 def login(request: LoginRequest):
     user = get_user_by_username(request.username)
-    if not user or not verify_password(request.password, user[1]):
+    if not user or not verify_password(request.password, user[2]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    if user[3]:  # Check if the user is already logged in
-        raise HTTPException(status_code=403, detail="User already logged in")
+    if user[4]:  # Check if the user is already logged in
+        set_user_logged_in(request.username, False)  # Log out the user from the previous session
 
     set_user_logged_in(request.username, True)  # Set user as logged in
 
     access_token = create_access_token(
-        data={"sub": user[0]},
+        data={"sub": user[1]},
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
-    return {"access_token": access_token, "token_type": "bearer", "balance": user[2]}
+    return {"access_token": access_token, "token_type": "bearer", "balance": user[3]}
